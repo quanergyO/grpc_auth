@@ -4,6 +4,7 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/quaneryo/grpc_auth/internal/app"
 	"github.com/quaneryo/grpc_auth/internal/config"
 )
 
@@ -19,7 +20,9 @@ func main() {
 	log := setupLogger(cfg.Env)
 	log.Info("starting application", slog.Any("config", cfg))
 
-	// TODO init app
+	application := app.New(log, cfg.GRPC.Port, cfg.StoragePath, cfg.TokenTTL)
+
+	application.GRPCSrv.MustRun()
 
 	// TODO run gRPC-server
 }
